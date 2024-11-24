@@ -20,6 +20,7 @@ const ThebeNotebook = () => {
   };
 
   useEffect(() => {
+    console.log(`Selected notebook: ${selectedNotebook}`);
     fetchNotebook(selectedNotebook); // Fetch the selected notebook
 
     const bootstrapThebe = () => {
