@@ -3,13 +3,13 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-  const defaultNotebook = 'test.ipynb'; // Default notebook
+  const [selectedNotebook, setSelectedNotebook] = useState('notebook1.ipynb'); // Default notebook
 
   // Function to fetch notebook content
-  const fetchNotebook = async () => {
+  const fetchNotebook = async (notebookName) => {
     try {
       const response = await fetch(
-        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/${defaultNotebook}`
+        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/${notebookName}`
       );
       const notebook = await response.json();
       setNotebookContent(notebook);
@@ -19,7 +19,7 @@ const ThebeNotebook = () => {
   };
 
   useEffect(() => {
-    fetchNotebook(); // Fetch the default notebook
+    fetchNotebook(selectedNotebook); // Fetch the selected notebook
 
     const bootstrapThebe = () => {
       if (window.thebelab) {
@@ -38,11 +38,21 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, []);
+  }, [selectedNotebook]);
 
   return (
     <div className="thebe-notebook">
       <h1>Interactive Jupyter Notebook</h1>
+
+      {/* Dropdown to select notebook */}
+      <select
+        value={selectedNotebook}
+        onChange={(e) => setSelectedNotebook(e.target.value)}
+      >
+        <option value="notebook1.ipynb">Notebook 1</option>
+        <option value="notebook2.ipynb">Notebook 2</option>
+        {/* Add more notebooks here */}
+      </select>
 
       {/* Colab badge link */}
       <div
@@ -68,9 +78,7 @@ const ThebeNotebook = () => {
           },
         })}
       </script>
-
-      <div id="thebe-activate" className="thebe-activate"></div>
-      <div id="thebe-status" className="thebe-status"></div>
+      
 
       {/* Display notebook cells */}
       {notebookContent ? (
