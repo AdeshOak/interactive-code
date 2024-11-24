@@ -8,5 +8,5 @@ dependencies:
   - pip:
       - torchvision
       - pytorch-lightning
-      - pl-bolts
+      - lightning-bolts
       - tensorboard
