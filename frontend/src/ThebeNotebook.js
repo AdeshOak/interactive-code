@@ -71,8 +71,6 @@ const ThebeNotebook = () => {
             repo: "AdeshOak/interactive-code",
             ref: "main",
           },
-          mountActivateWidget: true,
-          mountStatusWidget: true,
           codeMirrorConfig: {
             theme: 'abcdef',
           },
