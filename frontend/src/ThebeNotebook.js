@@ -8,7 +8,7 @@ const ThebeNotebook = () => {
   const fetchNotebook = async () => {
     try {
       const response = await fetch(
-        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
+        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test1.ipynb' // Only one notebook
       );
       
       if (!response.ok) {
@@ -48,7 +48,6 @@ const ThebeNotebook = () => {
 
   return (
     <div className="thebe-notebook">
-      <h1>Interactive Jupyter Notebook</h1>
 
       {/* Colab badge link */}
       <div
