@@ -9,18 +9,24 @@ const ThebeNotebook = () => {
   const fetchNotebook = async (notebookName) => {
     try {
       const response = await fetch(
-        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}`
-        
+        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}?${new Date().getTime()}` // Adding timestamp to prevent cache issues
       );
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const notebook = await response.json();
+      console.log('Fetched notebook:', notebook); // Log the notebook to verify its content
       setNotebookContent(notebook);
     } catch (error) {
       console.error('Error fetching notebook:', error);
+      setNotebookContent(null); // Reset notebook content in case of error
     }
   };
 
   useEffect(() => {
-    console.log(`Selected notebook: ${selectedNotebook}`);
+    console.log(`Selected notebook: ${selectedNotebook}`); // Log the selected notebook name
     fetchNotebook(selectedNotebook); // Fetch the selected notebook
 
     const bootstrapThebe = () => {
@@ -40,7 +46,7 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, [selectedNotebook]);
+  }, [selectedNotebook]); // Effect runs whenever selectedNotebook changes
 
   return (
     <div className="thebe-notebook">
@@ -78,7 +84,6 @@ const ThebeNotebook = () => {
           },
         })}
       </script>
-      
 
       {/* Display notebook cells */}
       {notebookContent ? (
