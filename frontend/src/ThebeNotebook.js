@@ -3,7 +3,7 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-  const [selectedNotebook, setSelectedNotebook] = useState('notebook1.ipynb'); // Default notebook
+  const [selectedNotebook, setSelectedNotebook] = useState('test.ipynb'); // Default notebook
 
   // Function to fetch notebook content
   const fetchNotebook = async (notebookName) => {
@@ -49,8 +49,8 @@ const ThebeNotebook = () => {
         value={selectedNotebook}
         onChange={(e) => setSelectedNotebook(e.target.value)}
       >
-        <option value="notebook1.ipynb">Notebook 1</option>
-        <option value="notebook2.ipynb">Notebook 2</option>
+        <option value="test.ipynb">Notebook 1</option>
+        <option value="test1.ipynb">Notebook 2</option>
         {/* Add more notebooks here */}
       </select>
 
