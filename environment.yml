@@ -1,0 +1,6 @@
+name: myenv
+dependencies:
+  - python=3.8
+  - matplotlib
+  - pandas
+  - numpy
