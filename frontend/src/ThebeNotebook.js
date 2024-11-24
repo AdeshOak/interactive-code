@@ -10,7 +10,7 @@ const ThebeNotebook = () => {
     try {
       const response = await fetch(
         `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}`
-        //Adding comment on purpose
+        
       );
       const notebook = await response.json();
       setNotebookContent(notebook);
