@@ -3,29 +3,23 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
+  const [selectedNotebook, setSelectedNotebook] = useState('test.ipynb'); // Default notebook
 
   // Function to fetch notebook content
-  const fetchNotebook = async () => {
+  const fetchNotebook = async (notebookName) => {
     try {
       const response = await fetch(
-        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
+        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}`
       );
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
       const notebook = await response.json();
-      console.log('Fetched notebook:', notebook); // Log the notebook to verify its content
       setNotebookContent(notebook);
     } catch (error) {
       console.error('Error fetching notebook:', error);
-      setNotebookContent(null); // Reset notebook content in case of error
     }
   };
 
   useEffect(() => {
-    fetchNotebook(); // Fetch the notebook on component mount
+    fetchNotebook(selectedNotebook); // Fetch the selected notebook
 
     const bootstrapThebe = () => {
       if (window.thebelab) {
@@ -44,10 +38,21 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, []); // Empty dependency array means this effect runs only once on mount
+  }, [selectedNotebook]);
 
   return (
     <div className="thebe-notebook">
+      <h1>Code Playground</h1>
+
+      {/* Dropdown to select notebook */}
+      <select
+        value={selectedNotebook}
+        onChange={(e) => setSelectedNotebook(e.target.value)}
+      >
+        <option value="test.ipynb">Notebook 1</option>
+        <option value="test1.ipynb">Notebook 2</option>
+        {/* Add more notebooks here */}
+      </select>
 
       {/* Colab badge link */}
       <div
@@ -63,8 +68,8 @@ const ThebeNotebook = () => {
         {JSON.stringify({
           requestKernel: true,
           binderOptions: {
-            repo: "AdeshOak/interactive-code",
-            ref: "main",
+            repo: 'AdeshOak/interactive-code',
+            ref: 'main',
           },
           codeMirrorConfig: {
             theme: 'abcdef',
