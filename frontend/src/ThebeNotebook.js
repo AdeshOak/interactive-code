@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 
 const ThebeNotebook = () => {
   useEffect(() => {
-    // Initialize Thebe after the component has mounted
-    const initThebe = async () => {
-      // Check if Thebe is available globally
+    const initThebe = () => {
+      // Check if Thebe is available after script load
       if (window.Thebe) {
         window.Thebe.bootstrap({
           binderOptions: {
@@ -18,7 +17,16 @@ const ThebeNotebook = () => {
       }
     };
 
-    initThebe();
+    // Ensure Thebe script is fully loaded before calling bootstrap
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/thebe@latest/lib/thebe.js";
+    script.async = true;
+    script.onload = initThebe; // Only initialize Thebe after the script is loaded
+    document.body.appendChild(script); // Append the script to the body of the page
+
+    return () => {
+      document.body.removeChild(script); // Clean up by removing the script when the component is unmounted
+    };
   }, []);
 
   return (
