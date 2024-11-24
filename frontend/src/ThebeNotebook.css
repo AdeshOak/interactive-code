@@ -35,4 +35,19 @@
     display: block;
     margin: 10px auto;
   }
+
+  .thebe-activate, .thebe-status {
+    margin: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+  }
+  
+  .thebe-status {
+    color: green;
+  }
+  
+  .thebe-activate {
+    color: blue;
+  }
   

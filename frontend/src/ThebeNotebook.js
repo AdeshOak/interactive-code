@@ -1,5 +1,3 @@
-// ThebeNotebook.js
-
 import React, { useEffect, useState } from 'react';
 import './ThebeNotebook.css';
 
@@ -53,10 +51,6 @@ const ThebeNotebook = () => {
         }}
       />
 
-      
-
-
-
       {/* Thebe configuration script */}
       <script type="text/x-thebe-config">
         {JSON.stringify({
@@ -72,8 +66,10 @@ const ThebeNotebook = () => {
           },
         })}
       </script>
-      <div class="thebe-activate" />
-      <div class="thebe-status" />
+
+      {/* These divs need to be present for Thebe to mount the widgets */}
+      <div id="thebe-activate" className="thebe-activate"></div>
+      <div id="thebe-status" className="thebe-status"></div>
 
       {/* Display notebook cells */}
       {notebookContent ? (
