@@ -3,23 +3,19 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-  const [selectedNotebook, setSelectedNotebook] = useState('notebook1.ipynb'); // Default notebook
-
-  // Function to fetch notebook content
-  const fetchNotebook = async (notebookName) => {
-    try {
-      const response = await fetch(
-        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/${notebookName}`
-      );
-      const notebook = await response.json();
-      setNotebookContent(notebook);
-    } catch (error) {
-      console.error('Error fetching notebook:', error);
-    }
-  };
 
   useEffect(() => {
-    fetchNotebook(selectedNotebook); // Fetch the selected notebook
+    const fetchNotebook = async () => {
+      try {
+        const response = await fetch(
+          'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/test.ipynb'
+        );
+        const notebook = await response.json();
+        setNotebookContent(notebook);
+      } catch (error) {
+        console.error('Error fetching notebook:', error);
+      }
+    };
 
     const bootstrapThebe = () => {
       if (window.thebelab) {
@@ -38,21 +34,13 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, [selectedNotebook]);
+
+    fetchNotebook();
+  }, []);
 
   return (
     <div className="thebe-notebook">
       <h1>Interactive Jupyter Notebook</h1>
-
-      {/* Dropdown to select notebook */}
-      <select
-        value={selectedNotebook}
-        onChange={(e) => setSelectedNotebook(e.target.value)}
-      >
-        <option value="test.ipynb">Notebook 1</option>
-        <option value="test1.ipynb">Notebook 2</option>
-        {/* Add more notebooks here */}
-      </select>
 
       {/* Colab badge link */}
       <div
@@ -78,7 +66,8 @@ const ThebeNotebook = () => {
           },
         })}
       </script>
-      
+
+      {/* These divs need to be present for Thebe to mount the widgets */}
       <div id="thebe-activate" className="thebe-activate"></div>
       <div id="thebe-status" className="thebe-status"></div>
 
