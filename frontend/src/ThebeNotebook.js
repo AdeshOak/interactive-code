@@ -3,13 +3,12 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-  const [selectedNotebook, setSelectedNotebook] = useState('test.ipynb'); // Default notebook
 
   // Function to fetch notebook content
-  const fetchNotebook = async (notebookName) => {
+  const fetchNotebook = async () => {
     try {
       const response = await fetch(
-        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}?${new Date().getTime()}` // Adding timestamp to prevent cache issues
+        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
       );
       
       if (!response.ok) {
@@ -26,8 +25,7 @@ const ThebeNotebook = () => {
   };
 
   useEffect(() => {
-    console.log(`Selected notebook: ${selectedNotebook}`); // Log the selected notebook name
-    fetchNotebook(selectedNotebook); // Fetch the selected notebook
+    fetchNotebook(); // Fetch the notebook on component mount
 
     const bootstrapThebe = () => {
       if (window.thebelab) {
@@ -46,21 +44,11 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, [selectedNotebook]); // Effect runs whenever selectedNotebook changes
+  }, []); // Empty dependency array means this effect runs only once on mount
 
   return (
     <div className="thebe-notebook">
       <h1>Interactive Jupyter Notebook</h1>
-
-      {/* Dropdown to select notebook */}
-      <select
-        value={selectedNotebook}
-        onChange={(e) => setSelectedNotebook(e.target.value)}
-      >
-        <option value="test.ipynb">Notebook 1</option>
-        <option value="test1.ipynb">Notebook 2</option>
-        {/* Add more notebooks here */}
-      </select>
 
       {/* Colab badge link */}
       <div
