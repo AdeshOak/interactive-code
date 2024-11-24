@@ -3,19 +3,23 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
+  const defaultNotebook = 'test.ipynb'; // Default notebook
+
+  // Function to fetch notebook content
+  const fetchNotebook = async () => {
+    try {
+      const response = await fetch(
+        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/${defaultNotebook}`
+      );
+      const notebook = await response.json();
+      setNotebookContent(notebook);
+    } catch (error) {
+      console.error('Error fetching notebook:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchNotebook = async () => {
-      try {
-        const response = await fetch(
-          'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/test.ipynb'
-        );
-        const notebook = await response.json();
-        setNotebookContent(notebook);
-      } catch (error) {
-        console.error('Error fetching notebook:', error);
-      }
-    };
+    fetchNotebook(); // Fetch the default notebook
 
     const bootstrapThebe = () => {
       if (window.thebelab) {
@@ -34,8 +38,6 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-
-    fetchNotebook();
   }, []);
 
   return (
@@ -67,7 +69,6 @@ const ThebeNotebook = () => {
         })}
       </script>
 
-      {/* These divs need to be present for Thebe to mount the widgets */}
       <div id="thebe-activate" className="thebe-activate"></div>
       <div id="thebe-status" className="thebe-status"></div>
 
