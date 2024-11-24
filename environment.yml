@@ -4,3 +4,9 @@ dependencies:
   - matplotlib
   - pandas
   - numpy
+  - pip
+  - pip:
+      - torchvision
+      - pytorch-lightning
+      - pl-bolts
+      - tensorboard
