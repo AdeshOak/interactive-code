@@ -9,7 +9,8 @@ const ThebeNotebook = () => {
   const fetchNotebook = async (notebookName) => {
     try {
       const response = await fetch(
-        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/${notebookName}`
+        `https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/${notebookName}`
+        
       );
       const notebook = await response.json();
       setNotebookContent(notebook);
