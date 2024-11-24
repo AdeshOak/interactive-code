@@ -53,6 +53,10 @@ const ThebeNotebook = () => {
         }}
       />
 
+      
+
+
+
       {/* Thebe configuration script */}
       <script type="text/x-thebe-config">
         {JSON.stringify({
@@ -61,11 +65,15 @@ const ThebeNotebook = () => {
             repo: "AdeshOak/interactive-code",
             ref: "main",
           },
+          mountActivateWidget: true,
+          mountStatusWidget: true,
           codeMirrorConfig: {
             theme: 'abcdef',
           },
         })}
       </script>
+      <div class="thebe-activate" />
+      <div class="thebe-status" />
 
       {/* Display notebook cells */}
       {notebookContent ? (
