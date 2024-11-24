@@ -3,7 +3,7 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-    //adding comment on purpose
+
   // Function to fetch notebook content
   const fetchNotebook = async () => {
     try {
@@ -48,14 +48,13 @@ const ThebeNotebook = () => {
 
   return (
     <div className="thebe-notebook">
-      <h1>Code Playground</h1>
 
       {/* Colab badge link */}
       <div
         dangerouslySetInnerHTML={{
-          __html: `<a href="https://colab.research.google.com/gist/AdeshOak/48804e276d03cc156c40deb217a4e185/baml_test.ipynb" target="_blank">
+          __html: <a href="https://colab.research.google.com/gist/AdeshOak/48804e276d03cc156c40deb217a4e185/baml_test.ipynb" target="_blank">
                      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-                   </a>`,
+                   </a>,
         }}
       />
 
