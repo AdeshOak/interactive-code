@@ -4,9 +4,11 @@ import './ThebeNotebook.css';
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
   const [kernelConnected, setKernelConnected] = useState(false); // Track kernel connection
+  const [loading, setLoading] = useState(true); // Manage loading state
 
   // Function to fetch notebook content
   const fetchNotebook = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await fetch(
         'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
@@ -22,12 +24,13 @@ const ThebeNotebook = () => {
     } catch (error) {
       console.error('Error fetching notebook:', error);
       setNotebookContent(null); // Reset notebook content in case of error
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
+  // Set up Thebe.js and handle kernel connection
   useEffect(() => {
-    fetchNotebook(); // Fetch the notebook on component mount
-
     const bootstrapThebe = () => {
       if (window.thebelab) {
         console.log('Thebe.js loaded, bootstrapping...');
@@ -57,15 +60,25 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
+
+    fetchNotebook(); // Fetch the notebook on component mount
   }, []); // Empty dependency array means this effect runs only once on mount
 
   return (
     <div className="thebe-notebook">
       {/* Loading message and spinner */}
-      {!kernelConnected && (
+      {loading && (
+        <div className="kernel-connecting">
+          <p>Loading notebook content...</p>
+          <div className="spinner"></div> {/* Add spinner styling in CSS */}
+        </div>
+      )}
+
+      {/* Kernel connection status */}
+      {!loading && !kernelConnected && (
         <div className="kernel-connecting">
           <p>Connecting to kernel...</p>
-          <div className="spinner"></div> {/* Add spinner styling in CSS */}
+          <div className="spinner"></div>
         </div>
       )}
 
@@ -112,9 +125,11 @@ const ThebeNotebook = () => {
           {notebookContent.cells.map((cell, index) => (
             <div key={index} className="cell-container">
               {cell.cell_type === 'code' ? (
-                <pre data-executable="true" data-language="python">
-                  {cell.source.join('')}
-                </pre>
+                <div className="code-cell">
+                  <pre data-executable="true" data-language="python">
+                    {cell.source.join('')}
+                  </pre>
+                </div>
               ) : (
                 <div className="markdown-cell">
                   <pre>{cell.source.join('')}</pre>
@@ -124,7 +139,7 @@ const ThebeNotebook = () => {
           ))}
         </div>
       ) : (
-        <p>Loading notebook content...</p>
+        <p>No notebook content available.</p>
       )}
     </div>
   );
