@@ -35,22 +35,21 @@ const ThebeNotebook = () => {
       if (window.thebelab) {
         console.log('Thebe.js loaded, bootstrapping...');
         window.thebelab.bootstrap();
-
+  
         // Listen for kernel status event
         window.thebelab.on('status', (event) => {
-          console.log('Kernel status event:', event);  // Log the entire event to inspect
-
-          // Check if the event message contains 'connected'
+          console.log('Kernel status event:', event);
           if (event && event.message && event.message.includes('connected')) {
             console.log('Kernel connected!');
-            setKernelConnected(true);  // Set kernel connected status to true
+            setKernelConnected(true);
+            setLoading(false);
           }
         });
       } else {
         console.error('Thebe.js not loaded.');
       }
     };
-
+  
     // Load Thebe.js script if not already loaded
     if (!window.thebelab) {
       const script = document.createElement('script');
@@ -60,9 +59,8 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-
-    fetchNotebook(); // Fetch the notebook on component mount
-  }, []); // Empty dependency array means this effect runs only once on mount
+  }, [notebookContent]); // Trigger bootstrap when notebookContent changes
+  
 
   return (
     <div className="thebe-notebook">
