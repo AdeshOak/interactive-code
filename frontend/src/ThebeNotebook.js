@@ -35,9 +35,11 @@ const ThebeNotebook = () => {
 
         // Listen for kernel ready event
         window.thebelab.on('status', (status) => {
-          console.log(`Kernel status: ${status}`);
-          if (status === 'ready') {
-            console.log(status)
+          console.log(`Kernel status:`, status);  // Log the entire status object to inspect it
+          
+          // Assuming status has a property `execution_state` to check when the kernel is ready
+          if (status.execution_state === 'idle') {  // Check for 'idle' as the kernel readiness status
+            console.log('Kernel is ready');
             setKernelConnected(true); // Set kernel connected status
           }
         });
