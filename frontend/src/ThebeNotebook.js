@@ -45,6 +45,7 @@ const ThebeNotebook = () => {
       }
     };
 
+    // Load Thebe.js script if not already loaded
     if (!window.thebelab) {
       const script = document.createElement('script');
       script.src = 'https://unpkg.com/thebelab@latest/lib/index.js';
@@ -87,23 +88,20 @@ const ThebeNotebook = () => {
       />
 
       {/* Thebe configuration script */}
-      
-
       <script type="text/x-thebe-config">
-  {JSON.stringify({
-    "requestKernel": true,
-    "binderOptions": {
-      "baseUrl": "https://mybinder.org",
-      "repo": "AdeshOak/interactive-code",
-      "ref": "main", 
-      "imageName": "gh/AdeshOak/interactive-code/main" 
-    },
-    "codeMirrorConfig": {
-      "theme": "abcdef"
-    }
-})}
-</script>
-
+        {JSON.stringify({
+          "requestKernel": true,
+          "binderOptions": {
+            "baseUrl": "https://mybinder.org",
+            "repo": "AdeshOak/interactive-code",
+            "ref": "main", 
+            "imageName": "gh/AdeshOak/interactive-code/main" 
+          },
+          "codeMirrorConfig": {
+            "theme": "abcdef"
+          }
+        })}
+      </script>
 
       {/* Display notebook cells */}
       {notebookContent ? (
