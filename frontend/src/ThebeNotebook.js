@@ -87,18 +87,23 @@ const ThebeNotebook = () => {
       />
 
       {/* Thebe configuration script */}
+      
+
       <script type="text/x-thebe-config">
-        {JSON.stringify({
-          requestKernel: true,
-          binderOptions: {
-            repo: 'AdeshOak/interactive-code',
-            ref: 'main',
-          },
-          codeMirrorConfig: {
-            theme: 'abcdef',
-          },
-        })}
-      </script>
+  {JSON.stringify({
+    "requestKernel": true,
+    "binderOptions": {
+      "baseUrl": "https://mybinder.org",
+      "repo": "AdeshOak/interactive-code",
+      "ref": "main", 
+      "imageName": "gh/AdeshOak/interactive-code/main" 
+    },
+    "codeMirrorConfig": {
+      "theme": "abcdef"
+    }
+})}
+</script>
+
 
       {/* Display notebook cells */}
       {notebookContent ? (
