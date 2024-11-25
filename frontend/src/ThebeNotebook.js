@@ -3,14 +3,15 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-    //add comment on purpose
+  const [kernelConnected, setKernelConnected] = useState(false); // Track kernel connection
+
   // Function to fetch notebook content
   const fetchNotebook = async () => {
     try {
       const response = await fetch(
         'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
       );
-      
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -31,6 +32,14 @@ const ThebeNotebook = () => {
       if (window.thebelab) {
         console.log('Thebe.js loaded, bootstrapping...');
         window.thebelab.bootstrap();
+
+        // Listen for kernel ready event
+        window.thebelab.on('status', (status) => {
+          console.log(`Kernel status: ${status}`);
+          if (status === 'ready') {
+            setKernelConnected(true); // Set kernel connected status
+          }
+        });
       } else {
         console.error('Thebe.js not loaded.');
       }
@@ -48,13 +57,32 @@ const ThebeNotebook = () => {
 
   return (
     <div className="thebe-notebook">
+      {/* Loading message and spinner */}
+      {!kernelConnected && (
+        <div className="kernel-connecting">
+          <p>Connecting to kernel...</p>
+          <div className="spinner"></div> {/* Add spinner styling in CSS */}
+        </div>
+      )}
+
+      {/* Run & Restart buttons */}
+      {kernelConnected && (
+        <div className="kernel-controls">
+          <button onClick={() => window.thebelab.runAllCells()}>
+            Run All
+          </button>
+          <button onClick={() => window.thebelab.restartKernel()}>
+            Restart Kernel
+          </button>
+        </div>
+      )}
 
       {/* Colab badge link */}
       <div
         dangerouslySetInnerHTML={{
-          __html: <a href="https://colab.research.google.com/gist/AdeshOak/48804e276d03cc156c40deb217a4e185/baml_test.ipynb" target="_blank">
+          __html: `<a href="https://colab.research.google.com/gist/AdeshOak/48804e276d03cc156c40deb217a4e185/baml_test.ipynb" target="_blank">
                      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-                   </a>,
+                   </a>`,
         }}
       />
 
@@ -63,8 +91,8 @@ const ThebeNotebook = () => {
         {JSON.stringify({
           requestKernel: true,
           binderOptions: {
-            repo: "AdeshOak/interactive-code",
-            ref: "main",
+            repo: 'AdeshOak/interactive-code',
+            ref: 'main',
           },
           codeMirrorConfig: {
             theme: 'abcdef',
