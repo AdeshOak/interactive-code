@@ -3,15 +3,14 @@ import './ThebeNotebook.css';
 
 const ThebeNotebook = () => {
   const [notebookContent, setNotebookContent] = useState(null);
-  const [kernelConnected, setKernelConnected] = useState(false); // Track kernel connection
-  const [loading, setLoading] = useState(true); // Manage loading state
+  const [kernelConnected, setKernelConnected] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Function to fetch notebook content
   const fetchNotebook = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await fetch(
-        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb' // Only one notebook
+        'https://raw.githubusercontent.com/AdeshOak/interactive-code/main/notebooks/test.ipynb'
       );
 
       if (!response.ok) {
@@ -19,38 +18,35 @@ const ThebeNotebook = () => {
       }
 
       const notebook = await response.json();
-      console.log('Fetched notebook:', notebook); // Log the notebook to verify its content
+      console.log('Fetched notebook:', notebook);
       setNotebookContent(notebook);
     } catch (error) {
       console.error('Error fetching notebook:', error);
-      setNotebookContent(null); // Reset notebook content in case of error
+      setNotebookContent(null);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
-  // Set up Thebe.js and handle kernel connection
   useEffect(() => {
     const bootstrapThebe = () => {
       if (window.thebelab) {
         console.log('Thebe.js loaded, bootstrapping...');
         window.thebelab.bootstrap();
-  
-        // Listen for kernel status event
+
         window.thebelab.on('status', (event) => {
           console.log('Kernel status event:', event);
+
           if (event && event.message && event.message.includes('connected')) {
             console.log('Kernel connected!');
             setKernelConnected(true);
-            setLoading(false);
           }
         });
       } else {
         console.error('Thebe.js not loaded.');
       }
     };
-  
-    // Load Thebe.js script if not already loaded
+
     if (!window.thebelab) {
       const script = document.createElement('script');
       script.src = 'https://unpkg.com/thebelab@latest/lib/index.js';
@@ -59,36 +55,23 @@ const ThebeNotebook = () => {
     } else {
       bootstrapThebe();
     }
-  }, [notebookContent]); // Trigger bootstrap when notebookContent changes
-  
+
+    fetchNotebook();
+  }, []);
 
   return (
     <div className="thebe-notebook">
-      {/* Loading message and spinner */}
-      {loading && (
-        <div className="kernel-connecting">
-          <p>Loading notebook content...</p>
-          <div className="spinner"></div> {/* Add spinner styling in CSS */}
-        </div>
-      )}
+      {/* Loading message */}
+      {loading && <p>Loading notebook content...</p>}
 
       {/* Kernel connection status */}
-      {!loading && !kernelConnected && (
-        <div className="kernel-connecting">
-          <p>Connecting to kernel...</p>
-          <div className="spinner"></div>
-        </div>
-      )}
+      {!loading && !kernelConnected && <p>Connecting to kernel...</p>}
 
       {/* Run & Restart buttons */}
       {kernelConnected && (
         <div className="kernel-controls">
-          <button onClick={() => window.thebelab.runAllCells()}>
-            Run All
-          </button>
-          <button onClick={() => window.thebelab.restartKernel()}>
-            Restart Kernel
-          </button>
+          <button onClick={() => window.thebelab.runAllCells()}>Run All</button>
+          <button onClick={() => window.thebelab.restartKernel()}>Restart Kernel</button>
         </div>
       )}
 
@@ -104,16 +87,16 @@ const ThebeNotebook = () => {
       {/* Thebe configuration script */}
       <script type="text/x-thebe-config">
         {JSON.stringify({
-          "requestKernel": true,
-          "binderOptions": {
-            "baseUrl": "https://mybinder.org",
-            "repo": "AdeshOak/interactive-code",
-            "ref": "main", 
-            "imageName": "gh/AdeshOak/interactive-code/main" 
+          requestKernel: true,
+          binderOptions: {
+            baseUrl: 'https://mybinder.org',
+            repo: 'AdeshOak/interactive-code',
+            ref: 'main',
+            imageName: 'gh/AdeshOak/interactive-code/main',
           },
-          "codeMirrorConfig": {
-            "theme": "abcdef"
-          }
+          codeMirrorConfig: {
+            theme: 'abcdef',
+          },
         })}
       </script>
 
