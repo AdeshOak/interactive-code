@@ -37,6 +37,7 @@ const ThebeNotebook = () => {
         window.thebelab.on('status', (status) => {
           console.log(`Kernel status: ${status}`);
           if (status === 'ready') {
+            console.log(status)
             setKernelConnected(true); // Set kernel connected status
           }
         });
