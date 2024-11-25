@@ -33,14 +33,14 @@ const ThebeNotebook = () => {
         console.log('Thebe.js loaded, bootstrapping...');
         window.thebelab.bootstrap();
 
-        // Listen for kernel ready event
-        window.thebelab.on('status', (status) => {
-          console.log(`Kernel status:`, status);  // Log the entire status object to inspect it
-          
-          // Assuming status has a property `execution_state` to check when the kernel is ready
-          if (status.execution_state === 'idle') {  // Check for 'idle' as the kernel readiness status
-            console.log('Kernel is ready');
-            setKernelConnected(true); // Set kernel connected status
+        // Listen for kernel status event
+        window.thebelab.on('status', (event) => {
+          console.log('Kernel status event:', event);  // Log the entire event to inspect
+
+          // Check if the event message contains 'connected'
+          if (event && event.message && event.message.includes('connected')) {
+            console.log('Kernel connected!');
+            setKernelConnected(true);  // Set kernel connected status to true
           }
         });
       } else {
